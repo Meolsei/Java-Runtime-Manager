@@ -32,14 +32,13 @@ A lightweight Python tool to manage Java installations, because SDKMAN doesn't e
 The script will update `JAVA_HOME` and `PATH` automatically.
 
 ## Testing
-- For PowerShell, run the following command:
+- For PowerShell:
     ```ps1
     $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine")
     java -version
     ```
-- For Command Prompt, run the following command:
+- For Command Prompt:
     ```bat
-    # Command Prompt
     set PATH=%PATH%;%SystemRoot%\system32;%SystemRoot%;%SystemRoot%\System32\Wbem
     java -version
     ```
