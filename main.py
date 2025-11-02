@@ -22,25 +22,28 @@ def setJavaHome(javaVersion, vendor, vendors):
         path = vendors[vendor].format(version=javaVersion, type=type_)
 
         if os.path.exists(path):
-            sysPath = [path] + sysPath
-            usrPath = [path] + usrPath
+            sysPath = [os.path.join(path, "bin")] + sysPath
+            usrPath = [os.path.join(path, "bin")] + usrPath
 
-            print(f"Setting JAVA_HOME to {path}...")
+            print(f"Setting {path} as default version...")
 
             subprocess.run(
                 ['powershell', '-Command',
                  f'New-ItemProperty -Path "HKLM:SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Environment" -Name JAVA_HOME -Value "{path}" -PropertyType String -Force'],
                 stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            print('Set user JAVA_HOME variable.')
 
             subprocess.run([
                 'powershell', '-Command',
                 f'New-ItemProperty -Path "HKLM:SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Environment" -Name PATH -Value "{os.pathsep.join(sysPath)}" -PropertyType String -Force'],
                 stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            print('Set system PATH variable.')
 
             subprocess.run([
                 'powershell', '-Command',
                 f'[Environment]::SetEnvironmentVariable("PATH", "{os.pathsep.join(usrPath)}", "User")'
             ])
+            print('Set user PATH variable.')
 
             return True
 
